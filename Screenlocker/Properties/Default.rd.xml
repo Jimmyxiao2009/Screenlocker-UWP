@@ -1,0 +1,6 @@
+<Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
+  <Application>
+    <!-- 后台任务入口与 XAML 都靠反射激活，.NET Native 下必须保留整个应用程序集 -->
+    <Assembly Name="*Application*" Dynamic="Required All" />
+  </Application>
+</Directives>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  IgnorableNamespaces="uap mp">
+
+  <!-- 版本号必须随每次部署递增：同版本覆盖安装不会真正替换二进制 -->
+  <Identity Name="ProjectGoofish.Screenlocker" Publisher="CN=ProjectGoofish" Version="1.0.2.1" />
+
+  <mp:PhoneIdentity PhoneProductId="8b6a1d94-7f52-4d3c-9c0e-2ad4f1b7c310" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+
+  <Properties>
+    <DisplayName>锁屏文字</DisplayName>
+    <PublisherDisplayName>Project Goofish</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.10586.0" MaxVersionTested="10.0.15063.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Screenlocker.App">
+      <uap:VisualElements
+        DisplayName="锁屏文字"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png"
+        Description="把自定义文字（电量 / 定位 / 温度 / 时间等）显示到锁屏详细状态和动态磁贴"
+        BackgroundColor="#1F1F1F">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" ShortName="锁屏文字" />
+        <!-- Notification=badgeAndTileText 才允许出现在锁屏"详细状态"里；BadgeLogo 必须是 24x24 单色 PNG -->
+        <uap:LockScreen Notification="badgeAndTileText" BadgeLogo="Assets\LockBadge.png" />
+        <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#1F1F1F" />
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="portrait" />
+        </uap:InitialRotationPreference>
+      </uap:VisualElements>
+      <Extensions>
+        <!-- 后台任务：定时刷新磁贴与锁屏详细状态。backgroundTasks 属于基础命名空间，不能加 uap: 前缀 -->
+        <Extension Category="windows.backgroundTasks" EntryPoint="Screenlocker.Tasks.TileRefreshTask">
+          <BackgroundTasks>
+            <Task Type="timer" />
+          </BackgroundTasks>
+        </Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <!-- location 属于 DeviceCapability，不能写进 Capability -->
+    <DeviceCapability Name="location" />
+  </Capabilities>
+</Package>
